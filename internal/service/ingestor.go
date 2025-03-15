@@ -4,8 +4,8 @@ import (
 	"encoding/xml"
 	"log"
 
+	"github.com/alanwade2001/go-sepa-engine-data/repository"
 	"github.com/alanwade2001/go-sepa-engine-ingest/internal/model"
-	"github.com/alanwade2001/go-sepa-engine-ingest/internal/repository"
 	"github.com/alanwade2001/go-sepa-iso/schema"
 )
 

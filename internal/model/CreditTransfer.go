@@ -3,7 +3,7 @@ package model
 import (
 	"encoding/xml"
 
-	"github.com/alanwade2001/go-sepa-engine-ingest/internal/repository/entity"
+	"github.com/alanwade2001/go-sepa-engine-data/repository/entity"
 	"github.com/alanwade2001/go-sepa-iso/gen"
 	"gorm.io/gorm"
 )

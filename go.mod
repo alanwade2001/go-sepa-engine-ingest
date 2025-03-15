@@ -3,7 +3,8 @@ module github.com/alanwade2001/go-sepa-engine-ingest
 go 1.24.1
 
 require (
-	github.com/alanwade2001/go-sepa-db v0.0.0-20250314083027-b3a67af7e9ad
+	github.com/alanwade2001/go-sepa-db v0.0.0-20250314181629-ba7d1fd3f464
+	github.com/alanwade2001/go-sepa-engine-data v0.0.0-20250315181353-a7789bd39f4a
 	github.com/alanwade2001/go-sepa-infra v0.0.0-20250314180550-b9c6b1a26456
 	github.com/alanwade2001/go-sepa-iso v0.0.0-20250314075832-0caa02c0ee73
 	github.com/alanwade2001/go-sepa-q v0.0.0-20250314083628-f5d6c10782b5

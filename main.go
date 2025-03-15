@@ -2,8 +2,9 @@ package main
 
 import (
 	db "github.com/alanwade2001/go-sepa-db"
+	"github.com/alanwade2001/go-sepa-engine-data/repository"
 	"github.com/alanwade2001/go-sepa-engine-ingest/internal/receiver"
-	"github.com/alanwade2001/go-sepa-engine-ingest/internal/repository"
+
 	"github.com/alanwade2001/go-sepa-engine-ingest/internal/service"
 	inf "github.com/alanwade2001/go-sepa-infra"
 	q "github.com/alanwade2001/go-sepa-q"
