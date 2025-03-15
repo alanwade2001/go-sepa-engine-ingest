@@ -3,7 +3,7 @@ package message
 import (
 	"fmt"
 
-	"github.com/alanwade2001/go-sepa-engine-ingest/internal/model"
+	"github.com/alanwade2001/go-sepa-engine-data/model"
 )
 
 type Initiation struct {

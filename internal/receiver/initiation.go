@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/alanwade2001/go-sepa-engine-ingest/internal/model"
+	"github.com/alanwade2001/go-sepa-engine-data/model"
 	"github.com/alanwade2001/go-sepa-engine-ingest/internal/receiver/message"
 	"github.com/alanwade2001/go-sepa-engine-ingest/internal/service"
 )

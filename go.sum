@@ -1,7 +1,9 @@
 github.com/alanwade2001/go-sepa-db v0.0.0-20250314181629-ba7d1fd3f464 h1:o7ZDbZUJebYTohdWK9ODIPpB664dwIeKLrL1sF/hcmA=
 github.com/alanwade2001/go-sepa-db v0.0.0-20250314181629-ba7d1fd3f464/go.mod h1:WKfb8qq8cYA0mBlWaA+xyPHxQH7uJBj+wcUzWVEhiSI=
-github.com/alanwade2001/go-sepa-engine-data v0.0.0-20250315181353-a7789bd39f4a h1:KWLBjiJu99WSToft2uzzo437/3p2R0NSrTVWH6A30GQ=
-github.com/alanwade2001/go-sepa-engine-data v0.0.0-20250315181353-a7789bd39f4a/go.mod h1:Ns8OEShurmKkeG++8Jbag/Mt7fjzEGZxaHErd6m+mtg=
+github.com/alanwade2001/go-sepa-engine-data v0.0.0-20250315185514-84dc3434bb15 h1:dI/m8EFCpc7cLNSDv9JffrKy3giUM+z+ibKdmejjJuI=
+github.com/alanwade2001/go-sepa-engine-data v0.0.0-20250315185514-84dc3434bb15/go.mod h1:Ns8OEShurmKkeG++8Jbag/Mt7fjzEGZxaHErd6m+mtg=
+github.com/alanwade2001/go-sepa-engine-data v0.0.0-20250315200210-9d4f8f6ac3be h1:Rxqy1LjOjcXJ+QEMhdKp5f7MIWwms3L2AvmOILslQBo=
+github.com/alanwade2001/go-sepa-engine-data v0.0.0-20250315200210-9d4f8f6ac3be/go.mod h1:A+1hleOmIJLWE7+nxQlvI8kYJQTxmoSfuTEjtaOEams=
 github.com/alanwade2001/go-sepa-infra v0.0.0-20250314180550-b9c6b1a26456 h1:/QLB/CC6oqf3dkXc5Jbn1mtPr+Y5BqrGGpNjiobpNq4=
 github.com/alanwade2001/go-sepa-infra v0.0.0-20250314180550-b9c6b1a26456/go.mod h1:PyUNhSJU5lTdzdJR8BV+RoAETBJnbXFfttJHPkjk8SI=
 github.com/alanwade2001/go-sepa-iso v0.0.0-20250314075832-0caa02c0ee73 h1:mG1q+McDf7DWGBydDUdhfQJxZVCrqUslDIbOcSYwX/0=

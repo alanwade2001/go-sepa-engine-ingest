@@ -11,7 +11,7 @@ import (
 
 	"time"
 
-	"github.com/alanwade2001/go-sepa-engine-ingest/internal/model"
+	"github.com/alanwade2001/go-sepa-engine-data/model"
 	utils "github.com/alanwade2001/go-sepa-utils"
 )
 

@@ -4,8 +4,9 @@ import (
 	"encoding/xml"
 	"log"
 
+	"github.com/alanwade2001/go-sepa-engine-data/model"
 	"github.com/alanwade2001/go-sepa-engine-data/repository"
-	"github.com/alanwade2001/go-sepa-engine-ingest/internal/model"
+	"github.com/alanwade2001/go-sepa-engine-data/repository/entity"
 	"github.com/alanwade2001/go-sepa-iso/schema"
 )
 
@@ -14,17 +15,17 @@ type Ingestor struct {
 	pmtRepos *repository.Payment
 	txRepos  *repository.CreditTransfer
 	store    *Store
-	//iban     *utils.Iban
+	iban     *Iban
 	delivery *Delivery
 }
 
-func NewIngestor(ghRepos *repository.PaymentGroup, pmtRepos *repository.Payment, txRepos *repository.CreditTransfer, store *Store /*iban *utils.Iban,*/, delivery *Delivery) *Ingestor {
+func NewIngestor(ghRepos *repository.PaymentGroup, pmtRepos *repository.Payment, txRepos *repository.CreditTransfer, store *Store, delivery *Delivery, iban *Iban) *Ingestor {
 	initiation := &Ingestor{
 		ghRepos:  ghRepos,
 		pmtRepos: pmtRepos,
 		txRepos:  txRepos,
 		store:    store,
-		//iban:     iban,
+		iban:     iban,
 		delivery: delivery,
 	}
 
@@ -48,14 +49,16 @@ func (s *Ingestor) Ingest(mdl *model.PaymentGroup) (err error) {
 		return err
 	}
 
+	var ePg *entity.PaymentGroup
+
 	mdl.GrpHdr = p1Doc.CstmrCdtTrfInitn.GrpHdr
-	if err = s.IngestPaymentGroup(mdl); err != nil {
+	if ePg, err = s.IngestPaymentGroup(mdl); err != nil {
 		return err
 	}
 
 	pmtInves := model.NewPayments(p1Doc.CstmrCdtTrfInitn.PmtInf)
 
-	if err = s.IngestPayments(pmtInves); err != nil {
+	if _, err = s.IngestPayments(ePg, pmtInves); err != nil {
 		return err
 	}
 
@@ -66,68 +69,82 @@ func (s *Ingestor) Ingest(mdl *model.PaymentGroup) (err error) {
 	return nil
 }
 
-func (s *Ingestor) IngestPaymentGroup(mdl *model.PaymentGroup) error {
+func (s *Ingestor) IngestPaymentGroup(mdl *model.PaymentGroup) (*entity.PaymentGroup, error) {
 
 	if pgEnt, err := mdl.ToEntity(); err != nil {
-		return err
+		return nil, err
 	} else if pgEnt, err = s.ghRepos.Perist(pgEnt); err != nil {
-		return err
+		return nil, err
 	} else {
 		mdl.ID = pgEnt.Model.ID
 		log.Printf("payment group entity: [%s]", pgEnt.String())
+		return pgEnt, nil
 	}
 
-	return nil
 }
 
-func (s *Ingestor) IngestPayments(payments []*model.Payment) error {
+func (s *Ingestor) IngestPayments(ePg *entity.PaymentGroup, payments []*model.Payment) ([]*entity.Payment, error) {
+	entities := make([]*entity.Payment, len(payments))
+
 	for _, payment := range payments {
-		if err := s.IngestPayment(payment); err != nil {
-			return err
+		if entity, err := s.IngestPayment(ePg, payment); err != nil {
+			return nil, err
+		} else {
+			entities = append(entities, entity)
 		}
 	}
 
-	return nil
+	return entities, nil
 }
 
-func (s *Ingestor) IngestPayment(pmtInf *model.Payment) error {
+func (s *Ingestor) IngestPayment(ePg *entity.PaymentGroup, pmtInf *model.Payment) (*entity.Payment, error) {
 
 	if pEnt, err := pmtInf.ToEntity(); err != nil {
-		return err
-	} else if pEnt, err = s.pmtRepos.Perist(pEnt); err != nil {
-		return err
+		return nil, err
 	} else {
-		pmtInf.ID = pEnt.Model.ID
-		log.Printf("payment entity: [%s]", pEnt.String())
-		txInves := model.NewCreditTransfers(pmtInf.PmtInf.CdtTrfTxInf)
-		if err = s.IngestTransactions(txInves); err != nil {
-			return err
+		pEnt.PaymentGroupID = ePg.Model.ID
+		if pEnt, err = s.pmtRepos.Perist(pEnt); err != nil {
+			return nil, err
+		} else {
+			pmtInf.ID = pEnt.Model.ID
+			log.Printf("payment entity: [%s]", pEnt.String())
+			txInves := model.NewCreditTransfers(pmtInf.PmtInf.CdtTrfTxInf)
+			if _, err = s.IngestTransactions(pEnt, txInves); err != nil {
+				return nil, err
+			}
 		}
+
+		return pEnt, nil
 	}
 
-	return nil
 }
 
-func (s *Ingestor) IngestTransactions(transactions []*model.CreditTransfer) error {
+func (s *Ingestor) IngestTransactions(eP *entity.Payment, transactions []*model.CreditTransfer) ([]*entity.Transaction, error) {
+	entities := make([]*entity.Transaction, len(transactions))
 	for _, transaction := range transactions {
-		if err := s.IngestTransaction(transaction); err != nil {
-			return err
+		if entity, err := s.IngestTransaction(eP, transaction); err != nil {
+			return nil, err
+		} else {
+			entities = append(entities, entity)
 		}
 	}
 
-	return nil
+	return entities, nil
 }
 
-func (s *Ingestor) IngestTransaction(cdtTrfTxInf *model.CreditTransfer) error {
+func (s *Ingestor) IngestTransaction(eP *entity.Payment, cdtTrfTxInf *model.CreditTransfer) (*entity.Transaction, error) {
 
 	if tEnt, err := cdtTrfTxInf.ToEntity(); err != nil {
-		return err
-	} else if tEnt, err = s.txRepos.Perist(tEnt); err != nil {
-		return err
+		return nil, err
 	} else {
-		cdtTrfTxInf.ID = tEnt.Model.ID
-		log.Printf("transaction entity: [%s]", tEnt.String())
+		tEnt.PaymentID = eP.Model.ID
+		if tEnt, err = s.txRepos.Perist(tEnt); err != nil {
+			return nil, err
+		} else {
+			cdtTrfTxInf.ID = tEnt.Model.ID
+			log.Printf("transaction entity: [%s]", tEnt.String())
+			return tEnt, nil
+		}
 	}
 
-	return nil
 }

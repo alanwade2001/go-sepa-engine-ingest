@@ -3,7 +3,7 @@ package service
 import (
 	"encoding/json"
 
-	"github.com/alanwade2001/go-sepa-engine-ingest/internal/model"
+	"github.com/alanwade2001/go-sepa-engine-data/model"
 	q "github.com/alanwade2001/go-sepa-q"
 )
 
