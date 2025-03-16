@@ -13,13 +13,13 @@ import (
 type Ingestor struct {
 	ghRepos  *repository.PaymentGroup
 	pmtRepos *repository.Payment
-	txRepos  *repository.CreditTransfer
+	txRepos  *repository.Transaction
 	store    *Store
 	iban     *Iban
 	delivery *Delivery
 }
 
-func NewIngestor(ghRepos *repository.PaymentGroup, pmtRepos *repository.Payment, txRepos *repository.CreditTransfer, store *Store, delivery *Delivery, iban *Iban) *Ingestor {
+func NewIngestor(ghRepos *repository.PaymentGroup, pmtRepos *repository.Payment, txRepos *repository.Transaction, store *Store, delivery *Delivery, iban *Iban) *Ingestor {
 	initiation := &Ingestor{
 		ghRepos:  ghRepos,
 		pmtRepos: pmtRepos,
@@ -42,7 +42,7 @@ func (s *Ingestor) Ingest(mdl *model.PaymentGroup) (err error) {
 		return err
 	}
 
-	p1Doc := &schema.P1Document{}
+	p1Doc := &schema.Pain001Document{}
 
 	// TODO handle parsing error better
 	if err = xml.Unmarshal([]byte(doc.Content), p1Doc); err != nil {

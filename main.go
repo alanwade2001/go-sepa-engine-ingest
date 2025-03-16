@@ -17,7 +17,7 @@ type App struct {
 	PGRepos  *repository.PaymentGroup
 	PmtRepos *repository.Payment
 	Iban     *service.Iban
-	TxRepos  *repository.CreditTransfer
+	TxRepos  *repository.Transaction
 	Store    *service.Store
 	Listener *q.Listener
 }
@@ -30,7 +30,7 @@ func NewApp() *App {
 	Postgres := db.NewPersist()
 	PGRepos := repository.NewPaymentGroup(Postgres)
 	PmtRepos := repository.NewPayment(Postgres)
-	TxRepos := repository.NewCreditTransfer(Postgres)
+	TxRepos := repository.NewTransaction(Postgres)
 	Store := service.NewStore()
 	Iban := service.NewIban()
 	Delivery := service.NewDelivery(Stomp)
