@@ -10,7 +10,7 @@ type Initiation struct {
 	ID      uint    `json:"id"`
 	MsgID   string  `json:"msgId"`
 	CtrlSum float64 `json:"ctrlSum"`
-	NbOfTxs string  `json:"NbOfTxs"`
+	NbOfTxs uint    `json:"NbOfTxs"`
 	State   string  `json:"state"`
 	DocID   uint    `json:"docId"`
 }

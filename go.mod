@@ -4,7 +4,7 @@ go 1.24.1
 
 require (
 	github.com/alanwade2001/go-sepa-db v0.0.0-20250314181629-ba7d1fd3f464
-	github.com/alanwade2001/go-sepa-engine-data v0.0.0-20250316185624-6b17afdf1b04
+	github.com/alanwade2001/go-sepa-engine-data v0.0.0-20250317161015-4677a07e3067
 	github.com/alanwade2001/go-sepa-infra v0.0.0-20250314180550-b9c6b1a26456
 	github.com/alanwade2001/go-sepa-iso v0.0.0-20250316080345-968f55e7353d
 	github.com/alanwade2001/go-sepa-q v0.0.0-20250314083628-f5d6c10782b5
