@@ -2,7 +2,7 @@ package service
 
 import (
 	"encoding/xml"
-	"log"
+	"log/slog"
 
 	"github.com/alanwade2001/go-sepa-engine-data/model"
 	"github.com/alanwade2001/go-sepa-engine-data/repository"
@@ -34,7 +34,7 @@ func NewIngestor(ghRepos *repository.PaymentGroup, pmtRepos *repository.Payment,
 
 func (s *Ingestor) Ingest(mdl *model.PaymentGroup) (err error) {
 
-	log.Printf("ingest: [%v]", mdl)
+	slog.Info("ingest", "model", mdl)
 
 	var doc *model.Document
 	// get the full document
@@ -77,7 +77,7 @@ func (s *Ingestor) IngestPaymentGroup(mdl *model.PaymentGroup) (*entity.PaymentG
 		return nil, err
 	} else {
 		mdl.ID = pgEnt.Model.ID
-		log.Printf("payment group entity: [%s]", pgEnt.String())
+		slog.Info("payment group persisted", "entity", pgEnt.String())
 		return pgEnt, nil
 	}
 
@@ -107,7 +107,7 @@ func (s *Ingestor) IngestPayment(ePg *entity.PaymentGroup, pmtInf *model.Payment
 			return nil, err
 		} else {
 			pmtInf.ID = pEnt.Model.ID
-			log.Printf("payment entity: [%s]", pEnt.String())
+			slog.Info("persisted payment", "entity", pEnt.String())
 			txInves := model.NewCreditTransfers(pmtInf.PmtInf.CdtTrfTxInf)
 			if _, err = s.IngestTransactions(pEnt, txInves); err != nil {
 				return nil, err
@@ -142,7 +142,7 @@ func (s *Ingestor) IngestTransaction(eP *entity.Payment, cdtTrfTxInf *model.Cred
 			return nil, err
 		} else {
 			cdtTrfTxInf.ID = tEnt.Model.ID
-			log.Printf("transaction entity: [%s]", tEnt.String())
+			slog.Info("persisted transaction", "entity", tEnt.String())
 			return tEnt, nil
 		}
 	}

@@ -4,7 +4,8 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"errors"
-	"log"
+	"log/slog"
+
 	"net/http"
 
 	"strconv"
@@ -45,18 +46,18 @@ func (s *Store) GetDocument(docId uint) (doc *model.Document, err error) {
 	id := strconv.FormatUint(uint64(docId), 10)
 	url := s.Address + "/documents/" + id
 
-	log.Printf("get document: [%s]", url)
+	slog.Info("get document", "url", url)
 
 	response, err := s.client.Get(url)
 
 	if err != nil {
-		log.Printf("failed to post, %v", err)
+		slog.Error("failed to post", "error", err)
 		return nil, err
 	}
 
 	if response.StatusCode != http.StatusOK {
 		err = errors.New("failed to get document")
-		log.Printf("failed to get, %v", err)
+		slog.Error("failed to get", "error", err)
 		return nil, err
 	}
 
@@ -64,11 +65,11 @@ func (s *Store) GetDocument(docId uint) (doc *model.Document, err error) {
 
 	err = json.NewDecoder(response.Body).Decode(doc)
 	if err != nil {
-		log.Printf("failed to decode, %v", err)
+		slog.Error("failed to decode", "error", err)
 		return nil, err
 	}
 
-	log.Printf("Document ID: %d", doc.ID)
+	slog.Info("Got Document:", "ID", doc.ID)
 
 	return doc, nil
 }
