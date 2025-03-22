@@ -7,7 +7,7 @@ import (
 	"github.com/alanwade2001/go-sepa-engine-data/model"
 	"github.com/alanwade2001/go-sepa-engine-data/repository"
 	"github.com/alanwade2001/go-sepa-engine-data/repository/entity"
-	"github.com/alanwade2001/go-sepa-iso/schema"
+	"github.com/alanwade2001/go-sepa-iso/pain_001_001_03"
 )
 
 type Ingestor struct {
@@ -42,7 +42,7 @@ func (s *Ingestor) Ingest(mdl *model.PaymentGroup) (err error) {
 		return err
 	}
 
-	p1Doc := &schema.Pain001Document{}
+	p1Doc := &pain_001_001_03.Document{}
 
 	// TODO handle parsing error better
 	if err = xml.Unmarshal([]byte(doc.Content), p1Doc); err != nil {
